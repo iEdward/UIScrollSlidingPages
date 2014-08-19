@@ -463,8 +463,8 @@
     //if not already on the page and the page is within the bounds of the pages we have, scroll to the page!
     if ([self getCurrentDisplayedPage] != page && page < [bottomScrollView.subviews count]){
         [self scrollToPage:page animated:YES];
+        [self updateMenuFontForSelectedPage:page];
     }
-    
 }
 
 /**If YES, hides the status bar and shows the page dots.
@@ -632,6 +632,15 @@
       [self.delegate didScrollToViewAtIndex:currentPage];
     }
 
+    [self updateMenuFontForSelectedPage:currentPage];
+
+    /*Just do a quick check, that if the paging enabled property is YES (paging is enabled), the user should not define widthForPageOnSlidingPagesViewController on the datasource delegate because scrollviews do not cope well with paging being enabled for scrollviews where each subview is not full width! */
+    if (self.pagingEnabled == YES && [self.dataSource respondsToSelector:@selector(widthForPageOnSlidingPagesViewController:atIndex:)]){
+        NSLog(@"Warning: TTScrollSlidingPagesController. You have paging enabled in the TTScrollSlidingPagesController (pagingEnabled is either not set, or specifically set to YES), but you have also implemented widthForPageOnSlidingPagesViewController:atIndex:. ScrollViews do not cope well with paging being disabled when items have custom widths. You may get weird behaviour with your paging, in which case you should either disable paging (set pagingEnabled to NO) and keep widthForPageOnSlidingPagesViewController:atIndex: implented, or not implement widthForPageOnSlidingPagesViewController:atIndex: in your datasource for the TTScrollSlidingPagesController instance.");
+    }
+}
+
+- (void)updateMenuFontForSelectedPage:(int)currentPage {
     //get the number of pages
     int numOfPages = [self.dataSource numberOfPagesForSlidingPagesViewController:self];
 
@@ -646,12 +655,8 @@
             }
         }
     }
-
-    /*Just do a quick check, that if the paging enabled property is YES (paging is enabled), the user should not define widthForPageOnSlidingPagesViewController on the datasource delegate because scrollviews do not cope well with paging being enabled for scrollviews where each subview is not full width! */
-    if (self.pagingEnabled == YES && [self.dataSource respondsToSelector:@selector(widthForPageOnSlidingPagesViewController:atIndex:)]){
-        NSLog(@"Warning: TTScrollSlidingPagesController. You have paging enabled in the TTScrollSlidingPagesController (pagingEnabled is either not set, or specifically set to YES), but you have also implemented widthForPageOnSlidingPagesViewController:atIndex:. ScrollViews do not cope well with paging being disabled when items have custom widths. You may get weird behaviour with your paging, in which case you should either disable paging (set pagingEnabled to NO) and keep widthForPageOnSlidingPagesViewController:atIndex: implented, or not implement widthForPageOnSlidingPagesViewController:atIndex: in your datasource for the TTScrollSlidingPagesController instance.");
-    }
 }
+
 
 #pragma mark UIPageControl page changed listener we set up on it
 -(void)pageControlChangedPage:(id)sender
@@ -661,6 +666,7 @@
     if ([self getCurrentDisplayedPage] != page && page < [bottomScrollView.subviews count]){
         [self scrollToPage:page animated:YES];
     }
+    [self updateMenuFontForSelectedPage:page];
 }
 
 #pragma mark property setters - for when need to do fancy things as well as set the value
