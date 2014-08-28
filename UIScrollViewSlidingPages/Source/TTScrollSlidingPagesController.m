@@ -271,7 +271,7 @@
             label.font = i == 0 ? self.titleScrollerTextSelectedFont : self.titleScrollerTextFont;
             label.backgroundColor = [UIColor clearColor];
 
-            if (self.disableTitleShadow) {
+            if (!self.disableTitleShadow) {
                 //add subtle drop shadow
                 label.layer.shadowColor = [self.titleScrollerTextDropShadowColour CGColor];
                 label.layer.shadowOffset = CGSizeMake(0.0f, 0.0f);
