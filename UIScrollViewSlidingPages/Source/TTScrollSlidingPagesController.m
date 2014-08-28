@@ -122,7 +122,7 @@
                 /*start at the top of the nextYPosition, but dont increment the yposition, so this means the triangle sits on top of the topscroller and cuts into it a bit*/
                 triangleFrame = CGRectMake(self.view.frame.size.width/2-(self.triangleSize.width/2), nextYPosition, self.triangleSize.width, self.triangleSize.height);
             } else if (self.triangleType == TTTriangleTypeBottom) {
-                triangleFrame = CGRectMake(self.view.frame.size.width/2-(self.triangleSize.width/2), nextYPosition - self.triangleSize.height, self.triangleSize.width, self.triangleSize.height);
+                triangleFrame = CGRectMake(self.view.frame.size.width/2-(self.triangleSize.width/2), nextYPosition + self.titleScrollerHeight - self.triangleSize.height, self.triangleSize.width, self.triangleSize.height);
             }
         }
 
