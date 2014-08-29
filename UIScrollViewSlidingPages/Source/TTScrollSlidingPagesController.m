@@ -317,7 +317,7 @@
         UIView *containerView = [[UIView alloc] init];
         
         //put the container view in the right position, y is always 0, x is incremented with each item you add (it is a horizontal scroller).
-        containerView.frame = CGRectMake(nextXPosition, self.contentStartPoint.y, pageWidth, bottomScrollView.frame.size.height - self.contentStartPoint.y);
+        containerView.frame = CGRectMake(nextXPosition, 0, pageWidth, bottomScrollView.frame.size.height);
         nextXPosition = nextXPosition + containerView.frame.size.width;
         
         //put the content view inside the container view
