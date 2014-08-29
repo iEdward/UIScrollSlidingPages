@@ -38,6 +38,7 @@
 @interface TTScrollSlidingPagesController ()
 
 @property (nonatomic, strong) NSMutableArray *titleLabels;
+@property (nonatomic) CGPoint contentStartPoint;
 
 @end
 
@@ -82,6 +83,7 @@
         self.pagingEnabled = YES;
         self.zoomOutAnimationDisabled = NO;
         self.hideStatusBarWhenScrolling = NO;
+        self.moveTitleScrollerOverContent = NO;
     }
     return self;
 }
@@ -163,9 +165,17 @@
         [topScrollViewWrapper bringSubviewToFront:barView];
     }
     
-    
-    //set up the bottom scroller (for the content to go in)
-    bottomScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, nextYPosition, self.view.frame.size.width, self.view.frame.size.height-nextYPosition)];
+
+    //set up the bottom scroller (for the content to go in)    
+    if (self.moveTitleScrollerOverContent) {
+        bottomScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+        self.contentStartPoint = CGPointMake(0, nextYPosition);
+    }
+    else {
+        bottomScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, nextYPosition, self.view.frame.size.width, self.view.frame.size.height-nextYPosition)];
+        self.contentStartPoint = CGPointMake(0, 0);
+    }
+
     bottomScrollView.pagingEnabled = self.pagingEnabled;
     bottomScrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight;
     bottomScrollView.showsVerticalScrollIndicator = NO;
@@ -176,18 +186,20 @@
     [self.view addSubview:bottomScrollView];
     
     //add the drop shadow on the top scroller (if enabled) and bring the view to the front
-    if (!self.titleScrollerHidden && !self.disableTitleScrollerShadow){
-        topScrollViewWrapper.layer.masksToBounds = NO;
-        topScrollViewWrapper.layer.shadowOffset = CGSizeMake(0, 4);
-        topScrollViewWrapper.layer.shadowRadius = 4;
-        topScrollViewWrapper.layer.shadowOpacity = 0.3;
-        
-        //Add shadow path (better performance)
-        CGPathRef shadowPath = [UIBezierPath bezierPathWithRect:topScrollViewWrapper.bounds].CGPath;
-        [topScrollViewWrapper.layer setShadowPath:shadowPath];
-        //rasterize (also due to the better performance)
-        topScrollViewWrapper.layer.shouldRasterize = YES;
-        topScrollViewWrapper.layer.rasterizationScale = [UIScreen mainScreen].scale;
+    if (!self.titleScrollerHidden) {
+        if (!self.disableTitleScrollerShadow) {
+            topScrollViewWrapper.layer.masksToBounds = NO;
+            topScrollViewWrapper.layer.shadowOffset = CGSizeMake(0, 4);
+            topScrollViewWrapper.layer.shadowRadius = 4;
+            topScrollViewWrapper.layer.shadowOpacity = 0.3;
+            
+            //Add shadow path (better performance)
+            CGPathRef shadowPath = [UIBezierPath bezierPathWithRect:topScrollViewWrapper.bounds].CGPath;
+            [topScrollViewWrapper.layer setShadowPath:shadowPath];
+            //rasterize (also due to the better performance)
+            topScrollViewWrapper.layer.shouldRasterize = YES;
+            topScrollViewWrapper.layer.rasterizationScale = [UIScreen mainScreen].scale;
+        }
         
         [self.view bringSubviewToFront:topScrollViewWrapper];//bring view to sit on top so you can see the shadow!
     }
@@ -482,6 +494,10 @@
     }
 }
 
+- (CGPoint)getContentStartPoint
+{
+    return self.contentStartPoint;
+}
 
 #pragma mark Some delegate methods for handling rotation.
 
