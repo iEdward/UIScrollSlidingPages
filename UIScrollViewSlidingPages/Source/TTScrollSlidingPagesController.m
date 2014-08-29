@@ -372,6 +372,36 @@
 }
 
 /**
+ Gets the topScrollViewWrapper view
+ 
+ @return Returns the topScrollViewWrapper view
+ */
+- (TTScrollViewWrapper *)getTitleScrollViewWrapper
+{
+    return topScrollViewWrapper;
+}
+
+/**
+ Gets the bottomScrollView view
+ 
+ @return Returns the bottomScrollView view
+ */
+- (UIScrollView *)getBottomScrollView
+{
+    return bottomScrollView;
+}
+
+/**
+ Gets the topScrollView view
+ 
+ @return Returns the topScrollView view
+ */
+- (UIScrollView *)getTopScrollView
+{
+    return topScrollView;
+}
+
+/**
  Gets the x position of the requested page in the bottom scroller. For example, if you ask for page 5, and page 5 starts at the contentOffset 520px in the bottom scroller, this will return 520.
  
  @param page The page number requested.

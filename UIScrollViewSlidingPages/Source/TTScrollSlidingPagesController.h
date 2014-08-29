@@ -55,6 +55,10 @@
 -(int)getXPositionOfPage:(int)page;
 - (CGPoint)getContentStartPoint;
 
+// These could probably be properties, but didn't want to refactor everything for now
+- (TTScrollViewWrapper *)getTitleScrollViewWrapper;
+- (UIScrollView *)getBottomScrollView;
+- (UIScrollView *)getTopScrollView;
 
 
 @property (nonatomic, weak) id<TTSlidingPagesDataSource> dataSource;
