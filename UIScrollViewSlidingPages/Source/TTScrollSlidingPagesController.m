@@ -312,10 +312,6 @@
             [NSException raise:@"TTScrollSlidingPagesController Wrong Page Content Type" format:@"TTScrollSlidingPagesController: Page contents should be instances of TTSlidingPage, one was returned that was either nil, or wasn't a TTSlidingPage. Make sure your pageForSlidingPagesViewController method in the datasource always returns a TTSlidingPage instance for each page requested."];
         }
         UIView *contentView = page.contentView;
-
-        //fix contentView frame to consider if the title scroller is on top of the bottom scrollview
-        CGRect contentFrame = CGRectMake(0, self.contentStartPoint.y, contentView.frame.size.width, contentView.frame.size.height - self.contentStartPoint.y);
-        contentView.frame = contentFrame;
         
         //make a container view (putting it inside a container view because if the contentView uses any autolayout it doesn't work well with the .transform property that the zoom animation uses. The container view shields it from this).
         UIView *containerView = [[UIView alloc] init];
