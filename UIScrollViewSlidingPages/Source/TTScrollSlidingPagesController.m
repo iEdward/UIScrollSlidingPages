@@ -215,7 +215,7 @@
 }
 
 -(void)viewDidAppear:(BOOL)animated{
-    [self viewDidAppear:animated];
+    [super viewDidAppear:animated];
 
     if (!viewDidAppearHasBeenCalled){
         viewDidAppearHasBeenCalled = YES;
