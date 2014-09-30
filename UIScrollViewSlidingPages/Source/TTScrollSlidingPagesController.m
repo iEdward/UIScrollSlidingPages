@@ -276,6 +276,25 @@
             imageView.contentMode = UIViewContentModeScaleAspectFit;
             imageView.image = title.headerImage;
             topItem = (UIView *)imageView;
+        } else if (title.headerAttributedText != nil){
+            UILabel *label = [[UILabel alloc] init];
+            label.attributedText = title.headerAttributedText;
+            label.textAlignment = NSTextAlignmentCenter;
+            label.adjustsFontSizeToFitWidth = YES;
+            label.textColor = self.titleScrollerInActiveTextColour;
+            label.font = i == 0 ? self.titleScrollerTextSelectedFont : self.titleScrollerTextFont;
+            label.backgroundColor = [UIColor clearColor];
+            
+            if (!self.disableTitleShadow) {
+                //add subtle drop shadow
+                label.layer.shadowColor = [self.titleScrollerTextDropShadowColour CGColor];
+                label.layer.shadowOffset = CGSizeMake(0.0f, 0.0f);
+                label.layer.shadowRadius = 2.0f;
+                label.layer.shadowOpacity = 1.0f;
+            }
+            
+            //set view as the top item
+            topItem = (UIView *)label;
         } else {
             UILabel *label = [[UILabel alloc] init];
             label.text = title.headerText;

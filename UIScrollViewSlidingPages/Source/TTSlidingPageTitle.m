@@ -50,4 +50,13 @@
     return (self);
 }
 
+-(id)initWithHeaderAttributedText:(NSAttributedString*)headerText {
+    self = [super init];
+    if(self)
+    {
+        self.headerAttributedText = headerText;
+    }
+    return (self);
+}
+
 @end
